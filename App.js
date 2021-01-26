@@ -7,13 +7,15 @@ import { Provider } from 'react-redux'
 import computerUpdateColor from './SimonReducer/reducer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Modal1 from './Components/Modal';
+import { useState } from 'react';
+
 
 const store = configureStore();
 // store.dispatch(computerUpdateColor());
-
 const Stack = createStackNavigator();
 
-const HelloWorldApp = () => {
+const HelloWorldApp = (props) => {
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -24,7 +26,7 @@ const HelloWorldApp = () => {
             options={{ title: 'Simon Says' }}
           />
           <Stack.Screen
-            name="Score board"
+            name="Score Board"
             component={ScoreBoard}
             options={{ title: 'Score board' }}
           />

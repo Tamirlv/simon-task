@@ -1,48 +1,40 @@
 import { ActionSheetIOS } from "react-native";
 import { combineReducers } from 'redux';
+import Sound from 'react-native-sound';
 
 const defaultState = {
     gameObjects: [
-        { color: 'green', index: 0, sound: 'sound' },
-        { color: 'red', index: 1, sound: 'sound' },
-        { color: 'yellow', index: 2, sound: 'sound' },
-        { color: 'blue', index: 3, sound: 'sound' }],
+        { color: 'green', index: 0, sound: new Sound('od.mp3', Sound.MAIN_BUNDLE), blinking: false },
+        { color: 'red', index: 1, sound: new Sound('re.mp3', Sound.MAIN_BUNDLE), blinking: false },
+        { color: 'yellow', index: 2, sound: new Sound('mi.mp3', Sound.MAIN_BUNDLE), blinking: false },
+        { color: 'blue', index: 3, sound: new Sound('fa.mp3', Sound.MAIN_BUNDLE), blinking: false }
+    ],
     computerColors: [],
-    currentIndex: 0
+    currentIndex: 0,
+    scores: []
 };
 const colorReducer = (state = defaultState, action) => {
     console.log("start",action)
     switch (action.type) {
-        // Add color to the computer colors array
-        // Check if user colors are even the computer colors
-        case 'RESET_GAME':
+        case 'SET_BLINKING':
+            // console.log('SET BLINKING', action.payload);
             return {
                 ...state,
-                computerColors: [],
-                currentIndex: 0
+                gameObjects: state.gameObjects.map(t => {
+                    if (t.index === action.payload.index) 
+                        return { ...t, blinking: action.payload.blinking };
+                    return t;
+                })
             }
-        case 'TURN_OVER':
+        case 'ADD_SCORE':
             return {
                 ...state,
-                computerColors: [...state.computerColors, action.payload],
-                currentIndex: 0
+                scores: [ ...state.scores, { name: action.payload.name, score: action.payload.score }]
             }
-        
-        case 'INCREMENT_INDEX':
+        case 'SET_SCORES':
             return {
                 ...state,
-                currentIndex: state.currentIndex + 1
-            }
-        
-        case 'RESET_INDEX':
-            return {
-                ...state,
-                currentIndex: 0
-            }
-        case 'RESET_COLORS':
-            return {
-                ...state,
-                computerColors: []
+                scores:action.payload.scores
             }
         case 'UPDATE_COLOR':
             const updateGameObjects = gameObjects.map(t => {
@@ -54,11 +46,7 @@ const colorReducer = (state = defaultState, action) => {
                 ...state,
                 gameObjects: updateGameObjects
             }
-        case 'NEW_GAME':
-            return {
-                ...state,
-                computerColors: [action.payload]
-            }
+
         default:
             return state;
     }

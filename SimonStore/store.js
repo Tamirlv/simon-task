@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
 import colorReducer from '../SimonReducer/reducer';
+
 export default () => {
     const store = createStore(
         colorReducer,
