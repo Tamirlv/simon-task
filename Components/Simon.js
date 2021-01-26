@@ -56,6 +56,9 @@ const Simon = (props) => {
      return computerColors.length > 0
   }
   const play = () => {
+    if (!computerColors.length)
+      return;
+    
     setGamesPlaying(true);
     computerColors.forEach((color, index) => {
       const gameObject = props.gameObjects.find(t => t.color === color);
@@ -67,7 +70,8 @@ const Simon = (props) => {
     });    
 
     setTimeout(() => {
-          setLock(false);
+      console.log('unlocking');
+      setLock(false);
     }, 750 * (computerColors.length + 1));
   }
 
@@ -187,9 +191,6 @@ const Simon = (props) => {
       <Start onStartGame={onStartGame}
         val={startButton()}
         dis={disStartButton()}/>
-      <Text>
-        {lock.toString()}
-      </Text>
       </View>
       
   )
